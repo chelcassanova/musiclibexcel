@@ -1,0 +1,6 @@
+*I want the script (or program) to create a file with the music folders as worksheets, be able to 
+fill each sheet with its respective folder's music files' information, and verify any additions to 
+or removals from the worksheet.
+
+The creating part is down in one file, but should everything be linked together using classes and executed in one
+program with a simple GUI?
