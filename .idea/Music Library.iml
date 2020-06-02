@@ -4,5 +4,9 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="jdk" jdkName="Python 3.6.2 (C:\Users\sassy\AppData\Local\Programs\Python\Python36-32\python.exe)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="engschedule" />
+    <orderEntry type="module" module-name="mailreader" />
+    <orderEntry type="module" module-name="punchin" />
+    <orderEntry type="module" module-name="ping" />
   </component>
 </module>
