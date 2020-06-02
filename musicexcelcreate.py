@@ -5,14 +5,20 @@ import eyed3
 from musicexcelinit import *
 
 # Get the excel workbook and sheets
-file = openpyxl.load_workbook('musiclibrary.xlsx')
+try:
+    file = openpyxl.load_workbook('musiclibrary.xlsx')
+except FileNotFoundError:
+    print("Creating workbook...")
+    file = openpyxl.Workbook()
+    file.save('musiclibrary.xlsx')
+
+thing = MusicExcelInit(file)
+thing.getdirs()
+thing.createsheets()
+musicpath = thing.givedirec()
 sheets = file.get_sheet_names()
 
 # Create an instance of the music excel init class and get the current music library
-thing = MusicExcelInit()
-musicpath = thing.givedirec()
-print(musicpath)
-
 
 # Create a list of all the folders in the main library
 musicfolders = os.listdir(musicpath)
@@ -77,5 +83,6 @@ for sheet, folder in zip(sheets, musicfolders):
                 cell.value = currentfile
             for cell in rowB:
                 cell.value = "ALBUM"
+
 
 file.save('musiclibrary.xlsx')

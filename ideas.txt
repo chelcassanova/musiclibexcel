@@ -4,3 +4,14 @@ or removals from the worksheet.
 
 The creating part is down in one file, but should everything be linked together using classes and executed in one
 program with a simple GUI?
+
+
+
+---------------------------------------------
+NEW IDEAS
+---------------------------------------------
+Instead of using an Excel sheet, use an actual database
+Connect this database with my Spotify account
+
+1. Place all the music info into a db file, start here
+2. Use Spotipy at some point
