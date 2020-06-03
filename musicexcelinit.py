@@ -53,4 +53,4 @@ class MusicExcelInit:
         return self.musicpath
 
     def __str__(self):
-        return "python is fucking GOAT"
+        return "python is very neat"
