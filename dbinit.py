@@ -1,4 +1,7 @@
+import re
+from random import randint
 import sqlite3
+import eyed3
 
 # Python's SQLite needs to first have a connection that represents the database
 class MusicDBInit:
@@ -15,21 +18,28 @@ class MusicDBInit:
         except sqlite3.Error as error:
             print(error)
 
-    def create_table(self, conn, create_table_sql):
+    @staticmethod
+    def create_table(conn):
 
         """
         Create a table using the create_table_sql statement
         :param conn: The Connection object that represents the database
-        :param create_table_sql: A CREATE TABLE statement
         :return:
         """
         try:
+            create_table_sql = """CREATE TABLE IF NOT EXISTS master (
+                             id integer,
+                             title text NOT NULL,
+                             artist text NOT NULL,
+                             album text NOT NULL,
+                             playlist text DEFAULT \'Empty\');"""
             curse = conn.cursor()
             curse.execute(create_table_sql)
         except sqlite3.Error as e:
             print(e)
 
-    def insert_song(self, conn, song):
+    @staticmethod
+    def insert_song(conn, insert_sql, filepath):
         """
         Insert a song into the table
         :param conn: Database connection
@@ -38,11 +48,16 @@ class MusicDBInit:
         """
 
         # NOTE: The question marks beside VALUES are arguments
-        sql = """INSERT INTO master (id, title, artist, playlist)
-                VALUES(?,?,?,?)"""
+        sql = """INSERT INTO master (id, title, artist, album, playlist)
+                VALUES(?,?,?,?,?)"""
 
+        tag = eyed3.load(filepath)
+        #playlistname = re.search()
         curse = conn.cursor()
-        curse.execute(sql, song)
+        if tag is not None and tag.tag.title is not None and tag.tag.artist is not None and tag.tag.album is not None:
+            curse.execute(insert_sql, (randint(1, 10000).__str__(), tag.tag.title, tag.tag.artist, tag.tag.album, "Empty"))
+            conn.commit()
+
         return curse.lastrowid
 
 #

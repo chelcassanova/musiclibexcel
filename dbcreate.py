@@ -1,5 +1,6 @@
 import os
 import re
+from random import randint
 import sqlite3
 from tkinter import filedialog, Tk
 import eyed3
@@ -9,6 +10,7 @@ from dbinit import *
 # TODO: Consider making a function to print to stderr if needed
 
 with MusicDBInit(r"music_database.db").conn as conn:
+    MusicDBInit.create_table(conn)
     master = conn  # ??????
 
 
@@ -23,11 +25,7 @@ def getmasterfolder():
 
 # Get the subfolders in the root folder
 def getsubfolders(masterpath):
-    # with os.listdir(masterpath) as directories:
-    #     # Check to see if there's any files amongst the folders
-    #     folders = []
-    #     for item in directories:
-    #         print(item)
+
     try:
         directories = os.listdir(masterpath)
         folders = []
@@ -45,12 +43,27 @@ def getsubfolders(masterpath):
     except FileNotFoundError as e:
         print(e)  # TODO: make the message better
 
+
 def insertsongs(rootfolder):
-    subfolders = []
-    for (dirpath, dirnames, filenames) in os.walk(root)
+    for (dirpath, dirname, filelist) in os.walk(rootfolder):
+        for file in filelist:
+            extension = re.search("\.m+", file)
+
+            if extension is not None:  # These are the mp3s
+                # Load up the tag info with eyed3
+                filepath = dirpath + "\\" + file
+                print(filepath)
+                tag = eyed3.load(filepath)
+                if tag is not None and tag.tag is not None and tag.tag.title is not None:
+                    insert = """INSERT INTO master (id, title, artist, playlist)
+                                VALUES(?,?,?,?);"""
+                    MusicDBInit.insert_song(master, insert, filepath)
+
+
 def main():
     rootfolder = getmasterfolder()
-    getsubfolders(rootfolder)
+    insertsongs(rootfolder)
+    master.close()
 
 
 if __name__ == "__main__":
